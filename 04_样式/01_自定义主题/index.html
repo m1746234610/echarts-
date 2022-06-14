@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自定义主题</title>
+  <script src="../../js/echarts.js"></script>
+  <script src="./theme/westeros.js"></script>
+  <script src="../../js/jquery.min.js"></script>
+  <style>
+    #main {
+      width: 600px;
+      height: 400px;
+      margin: 50px auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="main"></div>
+  <script>
+    let myChart = null
+
+    // 指定图表的配置项和数据
+    let option = {
+      title: {
+        text: 'ECharts 入门示例'
+      },
+      tooltip: {},
+      legend: {
+        data: ['销量']
+      },
+      xAxis: {
+        data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+      },
+      yAxis: {},
+      series: [
+        {
+          name: '销量',
+          type: 'bar',
+          data: [5, 20, 36, 10, 10, 20]
+        }
+      ]
+    };
+
+    new Promise((res, rej) => {
+      $.getJSON('./theme/wonderland.json', function (data) {
+        console.log(data);
+        // 正常导入
+        // myChart = echarts.init(document.querySelector('#main'))
+
+        // 1. 通过json引入
+        // 注册主题
+        echarts.registerTheme('theme', data)
+        myChart = echarts.init(document.querySelector('#main'), 'theme')
+
+        // 2. 通过js引入
+        // myChart = echarts.init(document.querySelector('#main'), 'westeros')
+
+        res()
+      })
+    }).then(res => {
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+    })
+  </script>
+</body>
+
+</html>
